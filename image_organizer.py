@@ -13,7 +13,7 @@ def image_organizer():
     total_size_mb = 0
 
     # Correctly combine generators by iterating through extensions
-    extensions = ('*.jpg', '*.jpeg', '*.png')
+    extensions = ("*.jpg", "*.jpeg", "*.png")
     files_to_move = []
     for ext in extensions:
         files_to_move.extend(current_dir.glob(ext))
@@ -21,7 +21,7 @@ def image_organizer():
     for file in files_to_move:
         try:
             # Generate new filename with timestamp
-            timestamp = datetime.now().strftime('%Y-%m-%d')
+            timestamp = datetime.now().strftime("%Y-%m-%d")
             new_filename = f"{file.stem}_{timestamp}{file.suffix}"
             new_file_path = images_archive / new_filename
 
@@ -38,6 +38,7 @@ def image_organizer():
     print(f"Total files moved: {total_files_moved}")
     print(f"Total size: {total_size_mb:.2f} MB")
     print(f"Archive location: {images_archive.absolute()}")
+
 
 if __name__ == "__main__":
     image_organizer()
