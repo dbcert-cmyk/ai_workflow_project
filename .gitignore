@@ -1,0 +1,18 @@
+# Big data
+models/
+venv/
+.venv/
+
+# Weird folder names
+--mcp-servers*
+
+# Temporary files
+__pycache__/
+.pytest_cache/
+*.pyc
+.DS_Store
+
+# Logs and outputs
+outputs/
+projects/
+.aider*
