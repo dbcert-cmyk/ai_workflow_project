@@ -1,0 +1,14 @@
+import random
+
+def assign_names(participants):
+    if len(participants) < 2:
+        raise ValueError("There must be at least two participants.")
+    
+    givers = participants.copy()
+    receivers = participants.copy()
+    random.shuffle(receivers)
+    
+    while any(giver == receiver for giver, receiver in zip(givers, receivers)):
+        random.shuffle(receivers)
+    
+    return dict(zip(givers, receivers))
