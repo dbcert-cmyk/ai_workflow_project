@@ -64,7 +64,7 @@ async def generate_stream_chat(prompt, max_tokens):
     """Stream generator for chat completions"""
     try:
         # Generate full response
-        full_response = generate(model, tokenizer, prompt=prompt, max_tokens=max_tokens, verbose=False)
+        full_response = generate(model, tokenizer, prompt=prompt, max_tokens=max_tokens, verbose=False)  # noqa: E501
 
         # Clean response
         full_response = clean_response(full_response, prompt)
@@ -106,7 +106,7 @@ async def generate_stream_chat(prompt, max_tokens):
 async def generate_stream_completion(prompt, max_tokens):
     """Stream generator for text completions"""
     try:
-        full_response = generate(model, tokenizer, prompt=prompt, max_tokens=max_tokens, verbose=False)
+        full_response = generate(model, tokenizer, prompt=prompt, max_tokens=max_tokens, verbose=False)  # noqa: E501
 
         # Stream word by word
         words = full_response.split()
@@ -139,7 +139,7 @@ async def chat_completion(request: ChatRequest):
         )
 
     # Non-streaming
-    response = generate(model, tokenizer, prompt=prompt, max_tokens=request.max_tokens, verbose=False)
+    response = generate(model, tokenizer, prompt=prompt, max_tokens=request.max_tokens, verbose=False)  # noqa: E501
     response = clean_response(response, prompt)
 
     return {
@@ -170,7 +170,7 @@ async def completion(request: CompletionRequest):
         )
 
     # Non-streaming
-    response = generate(model, tokenizer, prompt=prompt, max_tokens=request.max_tokens, verbose=False)
+    response = generate(model, tokenizer, prompt=prompt, max_tokens=request.max_tokens, verbose=False)  # noqa: E501
 
     return {
         "id": "cmpl-123",
