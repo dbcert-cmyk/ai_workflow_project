@@ -1,28 +1,32 @@
-from flask import Flask, request, render_template, jsonify
-import datetime
-from ai_logic import generate_qa_pair
-from data_handler import save_card, load_cards
+import json
+from datetime import datetime
+from ollama import Client
 
-app = Flask(__name__)
+client = Client(api_key="not-needed", base_url="http://localhost:8080/v1")
 
-@app.route('/')
-def index():
-    cards = load_cards()
-    return render_template('index.html', cards=cards)
-
-@app.route('/submit', methods=['POST'])
-def submit():
-    thought = request.form.get('thought')
-    if not thought:
-        return jsonify({'status': 'error', 'message': 'Thought is required'}), 400
+def generate_qa_pair(thought):
+    messages = [
+        {
+            "role": "system",
+            "content": "You are a helpful, brief, and friendly local AI assistant.",
+        },
+        {
+            "role": "user",
+            "content": thought,
+        }
+    ]
     
-    try:
-        question, answer = generate_qa_pair(thought)
-        timestamp = datetime.datetime.now().isoformat()
-        save_card(question, answer, timestamp)
-        return jsonify({'status': 'success'})
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 500
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    response = client.chat_completion(
+        model="mlx-community/Qwen2.5-Coder-7b",
+        messages=messages
+    )
+    
+    content = response['choices'][0]['message']['content']
+    lines = content.split('\n')
+    question = lines[0].strip()
+    answer = '\n'.join(lines[1:]).strip()
+    
+    return {
+        "Question": question,
+        "Answer": answer
+    }
