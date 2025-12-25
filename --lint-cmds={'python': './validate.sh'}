@@ -1,14 +1,28 @@
-import random
+from flask import Flask, request, render_template, jsonify
+import datetime
+from ai_logic import generate_qa_pair
+from data_handler import save_card, load_cards
 
-def assign_names(participants):
-    if len(participants) < 2:
-        raise ValueError("There must be at least two participants.")
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    cards = load_cards()
+    return render_template('index.html', cards=cards)
+
+@app.route('/submit', methods=['POST'])
+def submit():
+    thought = request.form.get('thought')
+    if not thought:
+        return jsonify({'status': 'error', 'message': 'Thought is required'}), 400
     
-    givers = participants.copy()
-    receivers = participants.copy()
-    random.shuffle(receivers)
-    
-    while any(giver == receiver for giver, receiver in zip(givers, receivers)):
-        random.shuffle(receivers)
-    
-    return dict(zip(givers, receivers))
+    try:
+        question, answer = generate_qa_pair(thought)
+        timestamp = datetime.datetime.now().isoformat()
+        save_card(question, answer, timestamp)
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
