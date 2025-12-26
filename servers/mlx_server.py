@@ -13,7 +13,7 @@ app = FastAPI()
 
 # Load model at startup
 print("Loading model...")
-model, tokenizer = load("mlx-community/Qwen2.5-Coder-14B-Instruct-4bit")
+model, tokenizer, *_ = load("mlx-community/Qwen2.5-Coder-14B-Instruct-4bit")
 print("Model loaded and ready!")
 
 

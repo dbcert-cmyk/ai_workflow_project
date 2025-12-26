@@ -1,6 +1,13 @@
 [tool.ruff]
 target-version = "py312"
 line-length = 120
+# Exclude bash scripts and non-Python files
+extend-exclude = [
+    "validate.sh",
+    ".aiderignore",
+    "*.md",
+    "*.html",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
